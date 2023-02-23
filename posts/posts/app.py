@@ -2,6 +2,7 @@ import uuid
 
 from flask import Flask, request
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -17,9 +18,14 @@ def posts_get():
 @app.post('/posts')
 def posts_post():
     data = request.json
-    id = uuid.uuid1().hex
-    title = data.get('title')
-    print(id)
+    id: str = uuid.uuid1().hex
+    title: str = data.get('title')
     posts[id] = {'id': id, 'title': title}
-    print(posts[id])
+    requests.post(url='http://localhost:4005/events', data={  # this is synchronous
+        'type': 'PostCreated',
+        'data': {
+            'id': id,
+            'title': title
+        }
+    })
     return posts[id], 201
