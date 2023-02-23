@@ -1,6 +1,7 @@
 import uuid
 from typing import Dict
 
+import requests
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -26,4 +27,13 @@ def comments_post(post_id):
     comments = comments_by_post_id.get(post_id) or []
     comments.append({'id': comment_id, 'content': content})
     comments_by_post_id[post_id] = comments
+    requests.post(url='http://localhost:4005/events', data={
+        'type': 'CommentCreated',
+        'data': {
+            'id': comment_id,
+            'content': content,
+            'post_id': post_id
+
+        }
+    })
     return comments, 201
