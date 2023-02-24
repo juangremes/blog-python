@@ -1,6 +1,6 @@
 # from dataclasses import dataclass
 # from typing import Dict, Sequence
-
+import requests
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -24,18 +24,7 @@ CORS(app)
 posts = {}
 
 
-@app.get('/posts')
-def query_posts_get():
-    return posts, 200
-
-
-@app.post('/events')
-def query_events_post():
-    payload = request.json
-    event_type = payload.get('type')
-    data = payload.get('data')
-    print(f"Received Event: {event_type}")
-
+def handle_event(event_type, data):
     if event_type == 'PostCreated':
         post_id = data.get('id')
         title = data.get('title')
@@ -57,6 +46,23 @@ def query_events_post():
         comment['status'] = status
         comment['content'] = content
 
-    print(posts)
-    return {}, 200
 
+resp = requests.get(url='http://localhost:4005/events')
+for event in resp.json():
+    print(f"Processing event: {event['type']}")
+    handle_event(event['type'], event['data'])
+
+
+@app.get('/posts')
+def query_posts_get():
+    return posts, 200
+
+
+@app.post('/events')
+def query_events_post():
+    payload = request.json
+    event_type = payload.get('type')
+    data = payload.get('data')
+    print(f"Received Event: {event_type}")
+    handle_event(event_type, data)
+    return {}, 200

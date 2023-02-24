@@ -17,14 +17,35 @@ def check_content_length_of_request_decorator(max_content_length):
 
 app = Flask(__name__)
 
+events = []
+
 
 @app.post('/events')
 @check_content_length_of_request_decorator(1000)
 def events_post():
     event = request.json
-    requests.post(url='http://localhost:4000/events', json=event)
-    requests.post(url='http://localhost:4001/events', json=event)
-    requests.post(url='http://localhost:4002/events', json=event)
-    requests.post(url='http://localhost:4003/events', json=event)
+    events.append(event)
+    try:
+        requests.post(url='http://localhost:4000/events', json=event)
+    except requests.exceptions.ConnectionError:
+        print('Cannot reach *posts* service')
+    try:
+        requests.post(url='http://localhost:4001/events', json=event)
+    except requests.exceptions.ConnectionError:
+        print('Cannot reach *comments* service')
+    try:
+        requests.post(url='http://localhost:4002/events', json=event)
+    except requests.exceptions.ConnectionError:
+        print('Cannot reach *query* service')
+    try:
+        requests.post(url='http://localhost:4003/events', json=event)
+    except requests.exceptions.ConnectionError:
+        print('Cannot reach *moderation* service')
+
     return {'status': 'OK'}, 200
+
+
+@app.get('/events')
+def events_get():
+    return events, 200
 
