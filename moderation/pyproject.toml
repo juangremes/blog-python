@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "event-bus"
+name = "moderation"
 version = "0.1.0"
 description = ""
 authors = ["Juan Gremes <juan.gremes@affirm.com>"]

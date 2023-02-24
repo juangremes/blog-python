@@ -25,15 +25,15 @@ def comments_post(post_id):
     comment_id = uuid.uuid1().hex
     content = data.get('content')
     comments = comments_by_post_id.get(post_id) or []
-    comments.append({'id': comment_id, 'content': content})
+    comments.append({'id': comment_id, 'content': content, 'status': 'pending'})
     comments_by_post_id[post_id] = comments
     requests.post(url='http://localhost:4005/events', json={
         'type': 'CommentCreated',
         'data': {
             'id': comment_id,
             'content': content,
-            'post_id': post_id
-
+            'post_id': post_id,
+            'status': 'pending'
         }
     })
     return comments, 201

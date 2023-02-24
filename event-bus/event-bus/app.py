@@ -1,5 +1,4 @@
 from flask import Flask, request, abort
-from flask_cors import CORS
 import functools
 import requests
 
@@ -17,7 +16,6 @@ def check_content_length_of_request_decorator(max_content_length):
 
 
 app = Flask(__name__)
-CORS(app)
 
 
 @app.post('/events')
@@ -27,5 +25,6 @@ def events_post():
     requests.post(url='http://localhost:4000/events', json=event)
     requests.post(url='http://localhost:4001/events', json=event)
     requests.post(url='http://localhost:4002/events', json=event)
+    requests.post(url='http://localhost:4003/events', json=event)
     return {'status': 'OK'}, 200
 
