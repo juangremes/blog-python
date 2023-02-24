@@ -33,5 +33,5 @@ def posts_post():
 
 @app.post('/events')
 def posts_receive_events_post():
-    print(f"Received Event {request.json.get('type')}")
+    print(f"Received Event: {request.json.get('type')}")
     return {}, 200

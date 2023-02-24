@@ -9,6 +9,7 @@ def moderation_events_post():
     payload = request.json
     event_type = payload.get('type')
     data = payload.get('data')
+    print(f"Received Event: {event_type}")
 
     if event_type == 'CommentCreated':
         status = 'rejected' if 'orange' in data.get('content') else 'approved'
@@ -16,7 +17,7 @@ def moderation_events_post():
             'type': 'CommentModerated',
             'data': {
                 'id': data.get('id'),
-                'postId': data.get('postId'),
+                'post_id': data.get('post_id'),
                 'status': status,
                 'content': data.get('content')
             }

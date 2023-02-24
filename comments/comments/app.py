@@ -41,5 +41,29 @@ def comments_post(post_id):
 
 @app.post('/events')
 def comments_receive_events_post():
-    print(f"Received Event {request.json.get('type')}")
+    payload = request.json
+    event_type = payload.get('type')
+    data = payload.get('data')
+    print(f"Received Event: {event_type}")
+
+    if event_type == 'CommentModerated':
+        post_id = data.get('post_id')
+        comment_id = data.get('id')
+        status = data.get('status')
+        content = data.get('content')
+
+        comments = comments_by_post_id[post_id]
+        comment = next((comment for comment in comments if comment["id"] == comment_id), None)
+        comment['status'] = status
+
+        requests.post(url='http://localhost:4005/events', json={
+            'type': 'CommentUpdated',
+            'data': {
+                'id': comment_id,
+                'status': status,
+                'post_id': post_id,
+                'content': content
+            }
+        })
+
     return {}, 200
