@@ -1,3 +1,4 @@
+import json
 import uuid
 from typing import Dict
 
@@ -27,7 +28,7 @@ def comments_post(post_id):
     comments = comments_by_post_id.get(post_id) or []
     comments.append({'id': comment_id, 'content': content})
     comments_by_post_id[post_id] = comments
-    requests.post(url='http://localhost:4005/events', data={
+    requests.post(url='http://localhost:4005/events', json={
         'type': 'CommentCreated',
         'data': {
             'id': comment_id,
@@ -37,3 +38,9 @@ def comments_post(post_id):
         }
     })
     return comments, 201
+
+
+@app.post('/events')
+def comments_receive_events_post():
+    print(f"Received Event {request.json.get('type')}")
+    return {}, 200

@@ -21,7 +21,7 @@ def posts_post():
     id: str = uuid.uuid1().hex
     title: str = data.get('title')
     posts[id] = {'id': id, 'title': title}
-    requests.post(url='http://localhost:4005/events', data={  # this is synchronous
+    requests.post(url='http://localhost:4005/events', json={  # this is synchronous
         'type': 'PostCreated',
         'data': {
             'id': id,
@@ -29,3 +29,9 @@ def posts_post():
         }
     })
     return posts[id], 201
+
+
+@app.post('/events')
+def posts_receive_events_post():
+    print(f"Received Event {request.json.get('type')}")
+    return {}, 200

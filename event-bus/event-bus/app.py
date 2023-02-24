@@ -22,10 +22,10 @@ CORS(app)
 
 @app.post('/events')
 @check_content_length_of_request_decorator(1000)
-def post_events():
-    event = request.get_data()
-    requests.post(url='http://localhost:4000/events', data=event)
-    requests.post(url='http://localhost:4001/events', data=event)
-    requests.post(url='http://localhost:4002/events', data=event)
+def events_post():
+    event = request.json
+    requests.post(url='http://localhost:4000/events', json=event)
+    requests.post(url='http://localhost:4001/events', json=event)
+    requests.post(url='http://localhost:4002/events', json=event)
     return {'status': 'OK'}, 200
 
