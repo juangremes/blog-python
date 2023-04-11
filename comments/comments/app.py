@@ -27,7 +27,7 @@ def comments_post(post_id):
     comments = comments_by_post_id.get(post_id) or []
     comments.append({'id': comment_id, 'content': content, 'status': 'pending'})
     comments_by_post_id[post_id] = comments
-    requests.post(url='http://localhost:4005/events', json={
+    requests.post(url='http://event-bus-srv:4005/events', json={
         'type': 'CommentCreated',
         'data': {
             'id': comment_id,
@@ -56,7 +56,7 @@ def comments_receive_events_post():
         comment = next((comment for comment in comments if comment["id"] == comment_id), None)
         comment['status'] = status
 
-        requests.post(url='http://localhost:4005/events', json={
+        requests.post(url='http://event-bus-srv:4005/events', json={
             'type': 'CommentUpdated',
             'data': {
                 'id': comment_id,

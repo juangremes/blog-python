@@ -47,7 +47,7 @@ def handle_event(event_type, data):
         comment['content'] = content
 
 
-resp = requests.get(url='http://localhost:4005/events')
+resp = requests.get(url='http://event-bus-srv:4005/events')
 for event in resp.json():
     print(f"Processing event: {event['type']}")
     handle_event(event['type'], event['data'])

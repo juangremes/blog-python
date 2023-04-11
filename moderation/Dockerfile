@@ -11,5 +11,5 @@ RUN poetry install --no-dev
 COPY ./moderation .
 
 CMD ["flask", "run", "--host=0.0.0.0"]
-# docker run -p 4000:5000 posts-service
+# docker run -p 4003:5000 posts-service
 # TODO: use WSGI server like waitress to serve app

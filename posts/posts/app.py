@@ -12,7 +12,7 @@ posts = {}
 print('v56')
 
 
-@app.get('/posts')
+@app.get('/posts')  # this is not used
 def posts_get():
     return posts, 200
 
@@ -23,7 +23,7 @@ def posts_post():
     id: str = uuid.uuid1().hex
     title: str = data.get('title')
     posts[id] = {'id': id, 'title': title}
-    requests.post(url='http://localhost:4005/events', json={  # this is synchronous
+    requests.post(url='http://event-bus-srv:4005/events', json={  # this is synchronous
         'type': 'PostCreated',
         'data': {
             'id': id,

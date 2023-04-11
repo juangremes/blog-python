@@ -26,19 +26,19 @@ def events_post():
     event = request.json
     events.append(event)
     try:
-        requests.post(url='http://localhost:4000/events', json=event)
+        requests.post(url='http://posts-clusterip-srv:4000/events', json=event)
     except requests.exceptions.ConnectionError:
         print('Cannot reach *posts* service')
     try:
-        requests.post(url='http://localhost:4001/events', json=event)
+        requests.post(url='http://comments-srv:4001/events', json=event)
     except requests.exceptions.ConnectionError:
         print('Cannot reach *comments* service')
     try:
-        requests.post(url='http://localhost:4002/events', json=event)
+        requests.post(url='http://query-srv:4002/events', json=event)
     except requests.exceptions.ConnectionError:
         print('Cannot reach *query* service')
     try:
-        requests.post(url='http://localhost:4003/events', json=event)
+        requests.post(url='http://moderation-srv:4003/events', json=event)
     except requests.exceptions.ConnectionError:
         print('Cannot reach *moderation* service')
 

@@ -13,7 +13,7 @@ def moderation_events_post():
 
     if event_type == 'CommentCreated':
         status = 'rejected' if 'orange' in data.get('content') else 'approved'
-        requests.post(url='http://localhost:4005/events', json={
+        requests.post(url='http://event-bus-srv:4005/events', json={
             'type': 'CommentModerated',
             'data': {
                 'id': data.get('id'),
