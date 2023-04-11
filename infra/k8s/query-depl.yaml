@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: posts-depl
+  name: query-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: posts
+      app: query
   template:
     metadata:
       labels:
-        app: posts
+        app: query
     spec:
       containers:
-        - name: posts
-          image: gremjua/posts-service
+        - name: query
+          image: gremjua/query-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: posts-clusterip-srv
+    name: query-srv
 spec:
   type: ClusterIP
   selector:
-    app: posts
+    app: query
   ports:
-    - name: posts
+    - name: query
       protocol: TCP
-      port: 4000  # port I want the k8s service to expose, so if I call port 4000 then it will redirect to the pod's port 5000
+      port: 4002  # port I want the k8s service to expose, so if I call localhost:4002 then it will redirect to the pod's port 5000
       targetPort: 5000  # port our flask app listens to

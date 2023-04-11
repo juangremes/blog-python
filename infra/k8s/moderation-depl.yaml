@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation
+    spec:
+      containers:
+        - name: moderation
+          image: gremjua/moderation-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: moderation-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003  # port I want the k8s service to expose, so if I call localhost:4003 then it will redirect to the pod's port 5000
+      targetPort: 5000  # port our flask app listens to
