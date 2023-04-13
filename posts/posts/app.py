@@ -17,7 +17,7 @@ def posts_get():
     return posts, 200
 
 
-@app.post('/posts')
+@app.post('/posts/create')
 def posts_post():
     data = request.json
     id: str = uuid.uuid1().hex
