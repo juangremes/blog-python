@@ -9,8 +9,6 @@ CORS(app)
 
 posts = {}
 
-print('v56')
-
 
 @app.get('/posts')  # this is not used
 def posts_get():
