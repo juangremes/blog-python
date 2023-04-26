@@ -44,7 +44,7 @@ def comments_receive_events_post():
     payload = request.json
     event_type = payload.get('type')
     data = payload.get('data')
-    print(f"Received Event: {event_type}")
+    app.logger.info(f"Received Event: {event_type}")
 
     if event_type == 'CommentModerated':
         post_id = data.get('post_id')

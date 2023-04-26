@@ -49,7 +49,7 @@ def handle_event(event_type, data):
 
 resp = requests.get(url='http://event-bus-srv:4005/events')
 for event in resp.json():
-    print(f"Processing event: {event['type']}")
+    app.logger.info(f"Processing event: {event['type']}")
     handle_event(event['type'], event['data'])
 
 
@@ -63,6 +63,6 @@ def query_events_post():
     payload = request.json
     event_type = payload.get('type')
     data = payload.get('data')
-    print(f"Received Event: {event_type}")
+    app.logger.info(f"Received Event: {event_type}")
     handle_event(event_type, data)
     return {}, 200
